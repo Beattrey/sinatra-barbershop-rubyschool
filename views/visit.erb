@@ -1,0 +1,35 @@
+<h3>Передайте контакты писарю</h3>
+
+<form action="/visit" method="POST">
+
+  <div class="form-group">
+    <label for="myname">Барин</label>
+    <input type="text" name="username" class="form-control" id="myname" placeholder="Введите имя барина">
+  </div>
+
+  <div class="form-group">
+    <label for="myphone">Номер гонца</label>
+    <input type="text" name="phone" class="form-control" id="myphone" placeholder="Введите контактный номер">
+  </div>
+
+  <div class="form-group">
+    <label for="mydate">Дата и время приема</label>
+    <input type="text" name="date" class="form-control" id="mydate" placeholder="Введите желаемую дату">
+  </div>
+
+  <div class="form-group">
+    <label for="myselect">Цирюльник</label>
+    <select class="form-control" name="barber" id="myselect">
+      <option>Walter White</option>
+      <option>Jessie Pinkman</option>
+      <option>Gus Fring</option>
+    </select>
+  </div>
+
+
+  <button type="submit" class="btn btn-primary">Передать</button>
+</form>
+
+<script>
+  alert('hello')
+</script>
