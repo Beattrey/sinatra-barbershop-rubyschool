@@ -2,9 +2,10 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'pony'
 
 get '/' do
-	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
+  erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"
 end
 
 get '/about' do
@@ -16,13 +17,27 @@ get '/visit' do
 end
 
 post '/visit' do
-  @user_name = params[:username]
+  @username = params[:username]
   @phone = params[:phone]
-  @date_time = params[:date]
+  @date = params[:date]
   @barber = params[:barber]
 
+  hh = {
+    :username => 'Введите имя',
+    :phone => 'Введите телефон',
+    :date => ' Введите дату и врмя'
+  }
+
+  @error = hh.select { |key, _| params[key] == "" }.values.join(", ")
+
+  if @error != ''
+    return erb :visit
+  end
+
+  erb "OK, username is #{@username}, #{@phone}, #{@date}, #{@barber}, #{@color}"
+
   f = File.open('./public/users.txt', 'a')
-  f.write "Клиент:  #{@user_name}, Номер телефона:  #{@phone}, Мастер : #{@barber} Дата:  #{@date_time} \n"
+  f.write "Клиент:  #{@username}, Номер телефона:  #{@phone}, Мастер : #{@barber} Дата:  #{@date} \n"
   f.close
 
   erb :message
@@ -36,11 +51,34 @@ post '/contacts' do
   @email = params[:email]
   @message = params[:message]
 
-  f = File.open('./public/contacts.txt', 'a')
-  f.write "Пользователь : #{@email}, пишет нам следующее : #{@message} \n"
-  f.close
+  hh = {
+    :email => 'Введите email'
+  }
+
+  @error = hh.select { |key, _| params[key] == "" }.values.join(", ")
+
+  if @error != ''
+    return erb :contacts
+  end
+
+  Pony.mail(
+    # :mail => params[:email],
+    :to => 'cryprofriend@gmail.com',
+    :body => params[:message],
+    # :port => '587',
+    :via => :smtp,
+    :via_options => {
+      :address => 'smtp.gmail.com',
+      :port => '587',
+      :enable_starttls_auto => true,
+      :user_name => 'cryprofriend@gmail.com',
+      :password => 'Qwe123qwe098',
+      :authentication => :plain,
+      :domain => 'localhost'
+    })
 
   erb :send
+
 end
 
 get '/login' do

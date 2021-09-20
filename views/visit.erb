@@ -4,17 +4,17 @@
 
   <div class="form-group">
     <label for="myname">Барин</label>
-    <input type="text" name="username" class="form-control" id="myname" placeholder="Введите имя барина">
+    <input type="text" name="username" class="form-control" id="myname" placeholder="Введите имя барина" value="<%= @username %>">
   </div>
 
   <div class="form-group">
     <label for="myphone">Номер гонца</label>
-    <input type="text" name="phone" class="form-control" id="myphone" placeholder="Введите контактный номер">
+    <input type="text" name="phone" class="form-control" id="myphone" placeholder="Введите контактный номер" value="<%= @phone %>">
   </div>
 
   <div class="form-group">
     <label for="mydate">Дата и время приема</label>
-    <input type="text" name="date" class="form-control" id="mydate" placeholder="Введите желаемую дату">
+    <input type="text" name="date" class="form-control" id="mydate" placeholder="Введите желаемую дату" value="<%= @date %>">
   </div>
 
   <div class="form-group">
@@ -29,7 +29,3 @@
 
   <button type="submit" class="btn btn-primary">Передать</button>
 </form>
-
-<script>
-  alert('hello')
-</script>
