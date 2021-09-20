@@ -62,7 +62,7 @@ post '/contacts' do
   end
 
   Pony.mail(
-    # :mail => params[:email],
+    :subject => params[:email],
     :to => 'cryprofriend@gmail.com',
     :body => params[:message],
     # :port => '587',
