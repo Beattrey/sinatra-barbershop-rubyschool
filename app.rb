@@ -71,8 +71,8 @@ post '/contacts' do
       :address => 'smtp.gmail.com',
       :port => '587',
       :enable_starttls_auto => true,
-      :user_name => 'cryprofriend@gmail.com',
-      :password => 'Qwe123qwe098',
+      :user_name => '-',
+      :password => '-',
       :authentication => :plain,
       :domain => 'localhost'
     })
