@@ -1,0 +1,14 @@
+<h3>Панель Писаря</h3>
+
+<p>Запись : </p>
+<table>
+  <% @file.each do |elem| %>
+    <tr>
+      <td>
+        <%= elem %>
+      </td>
+    </tr>
+  <% end %>
+  <% @file.close %>
+</table>
+
