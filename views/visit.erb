@@ -13,8 +13,8 @@
   </div>
 
   <div class="form-group">
-    <label for="mydate">Дата и время приема</label>
-    <input type="text" name="date" class="form-control" id="mydate" placeholder="Введите желаемую дату" value="<%= @date %>">
+    <label for="datetimepicker">Дата и время приема</label>
+    <input type="text" name="date" class="form-control" id="datetimepicker" placeholder="Введите желаемую дату" value="<%= @date %>">
   </div>
 
   <div class="form-group">
@@ -51,4 +51,6 @@
 
 <script>
     $('select[name="colorpicker"]').simplecolorpicker();
+    jQuery.datetimepicker.setLocale('ru');
+    jQuery('#datetimepicker').datetimepicker();
 </script>
