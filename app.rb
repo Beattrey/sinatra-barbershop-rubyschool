@@ -7,7 +7,9 @@ require 'sqlite3'
 
 
 def get_db
-  return SQLite3::Database.new 'barbershop.db'
+  @db = SQLite3::Database.new 'barbershop.db'
+  @db.results_as_hash = true
+  return @db
 end
 
 configure do
@@ -107,7 +109,11 @@ post '/login' do
   @password = params[:password]
 
   if @login == 'admin' && @password == 'admin'
-    @file = File.open('./public/users.txt', 'r')
+
+    get_db
+    @result = @db.execute 'SELECT * FROM Users'
+    @db.close
+
     erb :admin
   else
     erb :user_not_found
@@ -115,6 +121,6 @@ post '/login' do
 end
 
 get '/admin' do
-  @file = File.open('./public/users.txt', 'r')
-  erb :admin
+  redirect '/login'
+    # erb :admin
 end

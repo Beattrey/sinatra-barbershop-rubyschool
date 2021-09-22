@@ -1,14 +1,26 @@
 <h3>Панель Писаря</h3>
 
 <p>Запись : </p>
-<table>
-  <% @file.each do |elem| %>
-    <tr>
-      <td>
-        <%= elem %>
-      </td>
-    </tr>
+<table class="table table-hover">
+  <thead>
+<tr>
+<th>Имя</th>
+<th>Номер</th>
+<th>Дата</th>
+<th>Барбер</th>
+<th>Цвет</th>
+</tr>
+  </thead>
+  <tbody>
+  <% @result.each do |row| %>
+  <tr>
+    <th><%= row['username'] %></th>
+    <th><%= row['phone'] %></th>
+    <th><%= row['datestamp'] %></th>
+    <th><%= row['barber'] %></th>
+    <th><%= row['color'] %></th>
+  </tr>
+  </tbody>
   <% end %>
-  <% @file.close %>
 </table>
 
