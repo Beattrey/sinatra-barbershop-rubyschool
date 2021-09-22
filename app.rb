@@ -5,6 +5,17 @@ require 'sinatra/reloader'
 require 'pony'
 require 'sqlite3'
 
+def is_barber_exist? (db, name)
+  db.execute('select * from Barbers where name=?', [name]).length > 0
+end
+
+def seed_db (db, barbers)
+  barbers.each do |barber|
+    if !is_barber_exist? db, barber
+      db.execute 'insert into Barbers (name) values (?)', [barber]
+    end
+  end
+end
 
 def get_db
   @db = SQLite3::Database.new 'barbershop.db'
@@ -15,6 +26,9 @@ end
 configure do
   db = get_db
   db.execute 'CREATE TABLE IF NOT EXISTS "Users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "username" TEXT, "phone" TEXT, "datestamp" TEXT, "barber" TEXT, "color" TEXT)'
+  db.execute 'CREATE TABLE IF NOT EXISTS "Barbers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "name" TEXT)'
+
+  seed_db(db, ['Джош Ламонака', 'Эрик Пачинос', 'Baldy и Mr. Robinson.', 'Паоло и Элизео Саломоне', 'Крис Боссио'])
 end
 
 get '/' do
@@ -26,6 +40,8 @@ get '/about' do
 end
 
 get '/visit' do
+  get_db
+  @barber_list = @db.execute 'SELECT * FROM Barbers'
   erb :visit
 end
 
@@ -39,12 +55,14 @@ post '/visit' do
   hh = {
     :username => 'Введите имя',
     :phone => 'Введите телефон',
-    :date => ' Введите дату и врмя'
+    :date => ' Введите дату и время'
   }
 
   @error = hh.select { |key, _| params[key] == "" }.values.join(", ")
 
   if @error != ''
+    get_db
+    @barber_list = @db.execute 'SELECT * FROM Barbers'
     return erb :visit
   end
 
@@ -52,8 +70,6 @@ post '/visit' do
   db.execute'insert into Users (username, phone, datestamp, barber, color)
   values ( ?, ?, ? ,? ,?)',
               [@username, @phone, @date, @barber, @color]
-
-  erb "OK, username is #{@username}, #{@phone}, #{@date}, #{@barber}, #{@color}"
 
   f = File.open('./public/users.txt', 'a')
   f.write "Клиент:  #{@username}, Номер телефона:  #{@phone}, Мастер : #{@barber} Дата:  #{@date}  Цвет: #{@color}\n"
@@ -111,7 +127,7 @@ post '/login' do
   if @login == 'admin' && @password == 'admin'
 
     get_db
-    @result = @db.execute 'SELECT * FROM Users'
+    @result = @db.execute 'SELECT * FROM Users order by id desc'
     @db.close
 
     erb :admin
